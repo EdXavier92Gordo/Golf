@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Partidas de Golf</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
     <!-- ====================================================== -->
@@ -13,13 +15,14 @@
     <!-- ====================================================== -->
     <div id="vista-bienvenida">
         <div class="bienvenida-contenido">
-            <img src="https://images.pexels.com/photos/262524/pexels-photo-262524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Pelota de golf y palo" class="bienvenida-logo">
+            <img src="https://images.pexels.com/photos/262524/pexels-photo-262524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                alt="Pelota de golf y palo" class="bienvenida-logo">
             <h1>Golf Calculator</h1>
             <p>Una herramienta creada exclusivamente para la élite del golf.</p>
             <button id="btn-iniciar-app">Iniciar</button>
         </div>
         <div class="bienvenida-footer">
-            <p>Realizado por equipo de Audiases</p>
+            <p>Realizado por Audiases, con cariño para Claudio Crespo</p>
         </div>
     </div>
 
@@ -32,10 +35,14 @@
         <div id="vista-menu-principal">
             <h1>Partidas de Golf</h1>
             <div class="acciones-principales">
+                <button id="btn-gestionar-jugadores" style="background-color: #ffc107; color: black;">👤 Gestionar
+                    Jugadores</button>
+                <!-- <button id="btn-test-alerta" style="background-color: #ffc107; color: black;">Botón de Prueba</button> -->
+
                 <button id="btn-nueva-partida-parejas">⊕ Nueva Partida en Parejas</button>
                 <button id="btn-nueva-partida-individual">⊕ Nueva Partida Individual</button>
             </div>
-            
+
             <div id="partidas-guardadas-container">
                 <h2>Historial de Partidas</h2>
                 <div id="lista-partidas">
@@ -45,7 +52,47 @@
             </div>
 
             <div class="app-footer">
-                <p>Realizado por Audiases</p>
+                <p>Versión Jul-2025 // by EC </p>
+            </div>
+        </div>
+
+        <!-- ====================================================== -->
+        <!-- NUEVA VISTA: Gestión de Jugadores (CRUD)             -->
+        <!-- ====================================================== -->
+        <div id="vista-gestion-jugadores" style="display: none;">
+            <h2>Gestionar Jugadores</h2>
+
+            <div class="form-gestion-jugador">
+                <form id="form-jugador">
+                    <input type="hidden" id="jugador-id">
+                    <div class="form-group">
+                        <label for="jugador-nombre">Nombre del Jugador</label>
+                        <!-- AJUSTE: Añadir la clase "form-input" -->
+                        <input type="text" id="jugador-nombre" class="form-input" placeholder="Ej: Juan Pérez" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jugador-hdcp">Hándicap (HDCP)</label>
+                        <!-- AJUSTE: Añadir la clase "form-input" también aquí para consistencia -->
+                        <input type="number" id="jugador-hdcp" class="form-input" placeholder="Ej: 18" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="btn-guardar-jugador" class="btn-exito">Guardar Jugador</button>
+                        <button type="button" id="btn-cancelar-edicion" style="display: none;">Cancelar Edición</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="lista-gestion-container">
+                <h3>Jugadores Actuales</h3>
+                <div id="lista-gestion-jugadores">
+                    <!-- La lista de jugadores se renderizará aquí -->
+                </div>
+            </div>
+
+            <button id="btn-volver-a-menu-principal">Volver al Menú Principal</button>
+
+            <div class="app-footer">
+                <p>Versión Jul-2025 // by EC</p>
             </div>
         </div>
 
@@ -75,13 +122,19 @@
                 <button id="btn-agregar-pareja" type="button">⊕ Agregar Otra Pareja</button>
             </div>
             <div id="config-individual" style="display: none;">
-                 <div class="form-group"><label>Jugador 1</label><select id="ind_j1" class="selector-jugador"></select></div>
-                 <div class="form-group"><label>Jugador 2</label><select id="ind_j2" class="selector-jugador"></select></div>
+                <div class="form-group"><label>Jugador 1</label><select id="ind_j1" class="selector-jugador"></select>
+                </div>
+                <div class="form-group"><label>Jugador 2</label><select id="ind_j2" class="selector-jugador"></select>
+                </div>
             </div>
             <button id="btn-empezar-partida">Empezar a Anotar</button>
             <button id="btn-volver-menu">Volver al Menú</button>
+
+            <div class="app-footer">
+                <p>Versión Jul-2025 // by EC</p>
+            </div>
         </div>
-        
+
         <!-- ====================================================== -->
         <!-- Vista 3: Ingreso de Scores                           -->
         <!-- ====================================================== -->
@@ -103,6 +156,10 @@
                 <button id="btn-ver-resultados" class="btn-resultados">🏆 Ver Resultados</button>
                 <button id="btn-salir" class="btn-salir">Salir</button>
             </div>
+
+            <div class="app-footer">
+                <p>Versión Jul-2025 // by EC</p>
+            </div>
         </div>
 
         <!-- ====================================================== -->
@@ -115,10 +172,15 @@
             <div id="contenedor-apuestas"></div>
             <div id="contenedor-apuestas-dobles"></div>
             <button id="btn-toggle-debug" class="btn-debug">Ver/Ocultar Detalles de Cálculo</button>
-            <button id="btn-toggle-apuestas" class="btn-info" style="display: none;">Ver/Ocultar Detalles de Apuestas</button>
+            <button id="btn-toggle-apuestas" class="btn-info" style="display: none;">Ver/Ocultar Detalles de
+                Apuestas</button>
             <button id="btn-volver-a-scores">Volver a la Tarjeta</button>
+
+            <div class="app-footer">
+                <p>Versión Jul-2025 // by EC</p>
+            </div>
         </div>
-        
+
         <!-- ====================================================== -->
         <!-- Vista 5: Depuración de Cálculos                      -->
         <!-- ====================================================== -->
@@ -147,8 +209,9 @@
             <button id="btn-cancelar-eliminar-individual">Cancelar</button>
         </div>
     </div>
-    
+
     <!-- El script se carga al final -->
     <script src="js/app.js" defer></script>
 </body>
+
 </html>
