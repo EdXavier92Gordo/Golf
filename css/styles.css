@@ -444,3 +444,142 @@ thead th {
     color: #6c757d;
     font-style: italic;
 }
+
+
+/* ... (Todos los estilos anteriores sin cambios) ... */
+
+/* ==========================================================================
+   7. FOOTER DE LA APLICACIÓN
+   ========================================================================== */
+.app-footer {
+    /* ... */
+}
+
+/* ==========================================================================
+   8. NUEVO: VISTA DE GESTIÓN DE JUGADORES (CRUD)
+   ========================================================================== */
+#vista-gestion-jugadores .form-gestion-jugador {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: var(--radio-borde);
+    margin-bottom: 2rem;
+    border: 1px solid var(--color-borde);
+}
+
+#vista-gestion-jugadores .form-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+#vista-gestion-jugadores .lista-gestion-container {
+    margin-bottom: 2rem;
+}
+
+#lista-gestion-jugadores table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#lista-gestion-jugadores th, 
+#lista-gestion-jugadores td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+#lista-gestion-jugadores th {
+    background-color: #e9ecef;
+}
+
+#lista-gestion-jugadores tr:last-child td {
+    border-bottom: none;
+}
+
+#lista-gestion-jugadores tr:hover {
+    background-color: #f1f3f5;
+}
+
+#lista-gestion-jugadores .jugador-nombre {
+    font-weight: 500;
+}
+
+#lista-gestion-jugadores .jugador-hdcp {
+    text-align: center;
+    font-weight: bold;
+    color: var(--color-primario);
+}
+
+#lista-gestion-jugadores .acciones-jugador {
+    text-align: right;
+    white-space: nowrap;
+}
+
+#lista-gestion-jugadores .acciones-jugador button {
+    width: auto;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+
+/* Estilos para los nuevos inputs de texto */
+.form-input {
+    background-color: white; /* Un gris muy claro de fondo */
+    border: 1px solid #ced4da;   /* Borde sutil */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+}
+
+/* Efecto al hacer clic en el input (focus) */
+.form-input:focus {
+    border-color: var(--color-secundario); /* Cambia el color del borde a azul */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Añade un resplandor azul */
+    outline: none; /* Quita el borde por defecto del navegador */
+}
+
+/* --- NUEVO: Estilos para Inputs con Iconos --- */
+.input-with-icon {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: #adb5bd; /* Color gris sutil para el icono */
+    transition: color 0.2s ease;
+}
+
+/* Ajuste a .form-input para que el texto no se solape con el icono */
+.form-input {
+    padding-left: 40px !important; /* Añadir espacio a la izquierda para el icono */
+    background-color: white; /* Un fondo gris muy claro */
+    border: 2px solid #dee2e6;   /* Borde un poco más grueso */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1.1rem; /* Letra un poco más grande */
+    font-weight: 500; /* Letra semi-negrita */
+    color: #495057; /* Color de texto gris oscuro */
+    border-radius: var(--radio-borde);
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+}
+
+/* Placeholder con estilo más sutil */
+.form-input::placeholder {
+    color: #adb5bd;
+    font-weight: 400;
+}
+
+
+/* Ajuste al :focus para que el icono también cambie de color */
+.form-input:focus {
+    border-color: var(--color-primario); /* Cambia el color del borde al primario */
+    box-shadow: 0 0 0 4px rgba(0, 90, 156, 0.15); /* Resplandor más pronunciado */
+    outline: none;
+}
+
+.form-input:focus + .input-icon {
+    color: var(--color-primario); /* El icono se vuelve del color primario al enfocar */
+}
