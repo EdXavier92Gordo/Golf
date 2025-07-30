@@ -583,3 +583,27 @@ thead th {
 .form-input:focus + .input-icon {
     color: var(--color-primario); /* El icono se vuelve del color primario al enfocar */
 }
+
+/* --- Estilos del Footer de Bienvenida --- */
+.bienvenida-footer p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: normal;
+}
+
+/* NUEVA CLASE Y ANIMACIÓN PARA EL TEXTO DEL FOOTER */
+@keyframes slideUpAndFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.footer-credit {
+    opacity: 0; /* Empieza oculto */
+    animation: slideUpAndFadeIn 0.8s ease-out 0.5s forwards; /* animación | duración | timing | delay | fill-mode */
+}
