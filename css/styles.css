@@ -384,7 +384,7 @@ thead th {
     color: white;
     font-size: clamp(2rem, 8vw, 3rem);
     margin-bottom: 0.5rem;
-    font-weight: 300;
+    font-weight: 700;
     letter-spacing: 2px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
@@ -606,4 +606,27 @@ thead th {
 .footer-credit {
     opacity: 0; /* Empieza oculto */
     animation: slideUpAndFadeIn 0.8s ease-out 0.5s forwards; /* animación | duración | timing | delay | fill-mode */
+}
+
+/* --- NUEVO: Estilos para el Título de Bienvenida --- */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bienvenida-titulo {
+    color: white;
+    font-size: clamp(2.2rem, 8vw, 3.5rem); /* Un poco más grande */
+    font-weight: 900; /* Más grueso para que resalte */
+    letter-spacing: 3px; /* Más espaciado */
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
+    margin-bottom: 0.5rem;
+    opacity: 0; /* Empieza oculto para la animación */
+    animation: fadeInDown 0.8s ease-out 0.2s forwards; /* animación | duración | timing | delay | fill-mode */
 }
