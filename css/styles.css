@@ -257,7 +257,7 @@ thead th {
 #lista-partidas details > summary {
     cursor: pointer;
     font-weight: bold;
-    padding: 0.4rem 0.5rem; /* Reducido desde 0.5rem */
+    padding: 1.5rem 0.5rem; /* Reducido desde 0.5rem */
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
@@ -424,7 +424,7 @@ thead th {
 }
 
 .bienvenida-footer p {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.6);
     font-style: normal;
 }
@@ -586,7 +586,7 @@ thead th {
 
 /* --- Estilos del Footer de Bienvenida --- */
 .bienvenida-footer p {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.6);
     font-style: normal;
 }
@@ -629,4 +629,14 @@ thead th {
     margin-bottom: 0.5rem;
     opacity: 0; /* Empieza oculto para la animación */
     animation: fadeInDown 0.8s ease-out 0.2s forwards; /* animación | duración | timing | delay | fill-mode */
+}
+
+.gif-estilo {
+  display: block;
+  width: 85%; /* La hacemos más pequeña, al 50% de su contenedor */
+  max-width: 350px; /* Un tamaño máximo para que no sea muy grande en pantallas anchas */
+  margin: 20px auto; /* Centra la imagen horizontalmente y le da espacio arriba/abajo */
+  border-radius: 25px; /* ¡Aquí está la magia para redondear las esquinas! */
+  border: 3px solid #f0f0f0; /* Un borde sutil para darle un mejor acabado */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Una sombra suave opcional */
 }
