@@ -521,6 +521,12 @@ thead th {
     margin-left: 0.5rem;
 }
 
+/* AJUSTE: Ocultar la primera columna (ID) en la tabla de gestión de jugadores */
+#lista-gestion-jugadores th:first-child,
+#lista-gestion-jugadores td:first-child {
+    display: none;
+}
+
 /* Estilos para los nuevos inputs de texto */
 .form-input {
     background-color: white; /* Un gris muy claro de fondo */
