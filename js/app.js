@@ -153,7 +153,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         }
 
         let tablaHTML = '<table><thead><tr><th>ID</th><th>Nombre</th><th>HDCP</th><th>Acciones</th></tr></thead><tbody>';
-        [...jugadores].sort((a, b) => a.id - b.id).forEach(jugador => {
+// --- AJUSTE 2: Ordenar la lista de jugadores por nombre alfabéticamente ---
+        [...jugadores].sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(jugador => {
             tablaHTML += `
                 <tr>
                     <td>${jugador.id}</td>
@@ -474,6 +475,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
     }
 
     function validarSeleccionDeJugadores() {
+    // AJUSTE para desactivar la validación de jugadores que no permite elegirlos en más de una pareja    
+        /*
         const selectoresActivos = document.querySelectorAll('#config-parejas .selector-jugador, #config-individual .selector-jugador');
         const jugadoresSeleccionados = new Set();
         selectoresActivos.forEach(sel => {
@@ -491,6 +494,7 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 }
             });
         });
+        */
     }
 
     function handleEmpezarPartida() {
@@ -522,18 +526,41 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                     todosLosJugadoresSeleccionados.push(j1, j2);
                 }
             }
+            
+// --- AJUSTE 1: Se comenta la validación de jugadores duplicados ---
+            /*
+            
             const hayDuplicados = new Set(todosLosJugadoresSeleccionados).size !== todosLosJugadoresSeleccionados.length;
             if(hayDuplicados) {
                 alert('Un jugador no puede estar seleccionado en más de una pareja.');
                 return;
             }
+                */
             if(todasLasParejas.length < 2) {
                 alert('Debe haber al menos dos parejas completas para empezar.');
                 return;
             }
             nuevaPartida.jugadores = todasLasParejas.flat();
             // AJUSTE CLAVE 1: Generar descripción de pareja con separador de depuración '#'
-            nuevaPartida.descripcion = 'Parejas: ' + todasLasParejas.map(p => p.join(' & ')).join(' VS ');
+            //nuevaPartida.descripcion = 'Parejas: ' + todasLasParejas.map(p => p.join(' & ')).join(' VS ');
+        
+            // ==============================================================================
+            // --- AJUSTE SOLICITADO: Mostrar nombres de jugadores en la descripción ---
+            // ==============================================================================
+            const descripcionParejas = todasLasParejas.map(par => {
+            	// Para cada ID en el par, buscamos el objeto jugador completo
+            	const nombre1 = jugadores.find(j => j.id == par[0])?.nombre || `ID ${par[0]}`;
+            	const nombre2 = jugadores.find(j => j.id == par[1])?.nombre || `ID ${par[1]}`;
+            	// Unimos los nombres encontrados
+            	return `${nombre1} & ${nombre2}`;
+            }).join(' VS '); // Unimos todas las parejas con ' VS '
+            
+            nuevaPartida.descripcion = `Parejas: ${descripcionParejas}`;
+            // ==============================================================================
+            // --- FIN DEL AJUSTE ---
+            // 
+
+
         } else {
             const j1Id = document.getElementById('ind_j1').value;
             const j2Id = document.getElementById('ind_j2').value;
