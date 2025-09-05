@@ -352,7 +352,7 @@ thead th {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: linear-gradient(rgba(0, 3, 15, 0.7), rgba(0, 3, 15, 0.7)), url('https://images.pexels.com/photos/1322184/pexels-photo-1322184.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+    background-image: linear-gradient(rgba(0, 3, 15, 0.7), rgba(0, 3, 15, 0.7)), url('https://images.pexels.com/photos/6572954/pexels-photo-6572954.jpeg?_gl=1*7aad5i*_ga*MTg5MTg0NTkwMC4xNzUzODQwNzcz*_ga_8JE65Q40S6*czE3NTcwOTc2NzMkbzYkZzEkdDE3NTcwOTc5OTQkajE1JGwwJGgw');
     background-size: cover;
     background-position: center;
     color: white;
@@ -646,3 +646,4 @@ thead th {
   border: 3px solid #f0f0f0; /* Un borde sutil para darle un mejor acabado */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Una sombra suave opcional */
 }
+
