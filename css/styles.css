@@ -339,7 +339,7 @@ thead th {
 }
 
 /* ==========================================================================
-   6. PANTALLA DE BIENVENIDA
+   6. PANTALLA DE BIENVENIDA --IMAGEN A REEMPLAZAR  https://www.pexels.com/es-es/buscar/campo%20de%20golf/
    ========================================================================== */
 #vista-bienvenida {
     position: fixed;
@@ -352,7 +352,7 @@ thead th {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: linear-gradient(rgba(0, 3, 15, 0.7), rgba(0, 3, 15, 0.7)), url('https://images.pexels.com/photos/6572954/pexels-photo-6572954.jpeg?_gl=1*7aad5i*_ga*MTg5MTg0NTkwMC4xNzUzODQwNzcz*_ga_8JE65Q40S6*czE3NTcwOTc2NzMkbzYkZzEkdDE3NTcwOTc5OTQkajE1JGwwJGgw');
+    background-image: linear-gradient(rgba(0, 3, 15, 0.7), rgba(0, 3, 15, 0.7)), url('https://images.pexels.com/photos/7758348/pexels-photo-7758348.jpeg?_gl=1*1j2l1fk*_ga*MTg5MTg0NTkwMC4xNzUzODQwNzcz*_ga_8JE65Q40S6*czE3NTc1MTQ1NDYkbzkkZzEkdDE3NTc1MTUyMTAkajU5JGwwJGgw');
     background-size: cover;
     background-position: center;
     color: white;
@@ -646,4 +646,3 @@ thead th {
   border: 3px solid #f0f0f0; /* Un borde sutil para darle un mejor acabado */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Una sombra suave opcional */
 }
-
