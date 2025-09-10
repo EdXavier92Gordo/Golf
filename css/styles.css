@@ -10,10 +10,10 @@
     --color-superficie: #ffffff;
     --color-borde: #dee2e6;
     --color-peligro: #dc3545;
-    --color-exito: #28a745;
+    --color-exito: #258f40;
     --color-info: #17a2b8;
     --color-aviso: #ffc107;
-
+    --color-exito2: #2559a7;
     --radio-borde: 8px;
     --sombra-caja: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -398,7 +398,7 @@ thead th {
 }
 
 .bienvenida-contenido button {
-    background-color: var(--color-exito);
+    background-color: var(--color-exito2);
     border: none;
     padding: 0.8rem 2.5rem;
     font-size: 1.2rem;
@@ -412,7 +412,7 @@ thead th {
 }
 
 .bienvenida-contenido button:hover {
-    background-color: #218838;
+    background-color: #066330;
     transform: scale(1.05);
 }
 
