@@ -475,8 +475,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
     }
 
     function validarSeleccionDeJugadores() {
-    // AJUSTE para desactivar la validación de jugadores que no permite elegirlos en más de una pareja    
-        /*
+    // AJUSTE para desactivar la validación de jugadores que no permite elegirlos en más de una pareja  /*  
+        
         const selectoresActivos = document.querySelectorAll('#config-parejas .selector-jugador, #config-individual .selector-jugador');
         const jugadoresSeleccionados = new Set();
         selectoresActivos.forEach(sel => {
@@ -494,7 +494,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 }
             });
         });
-        */
+        
+       //HASTA AQUÍ COMENTAR PARA DESACTIVAR VALIDACIÓN                       */
     }
 
     function handleEmpezarPartida() {
@@ -527,15 +528,15 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 }
             }
             
-// --- AJUSTE 1: Se comenta la validación de jugadores duplicados ---
-            /*
+// --- AJUSTE 1: Se comenta la validación de jugadores duplicados --- /*
+            
             
             const hayDuplicados = new Set(todosLosJugadoresSeleccionados).size !== todosLosJugadoresSeleccionados.length;
             if(hayDuplicados) {
                 alert('Un jugador no puede estar seleccionado en más de una pareja.');
                 return;
             }
-                */
+                // hasta aqui comentar para inactivar validación */
             if(todasLasParejas.length < 2) {
                 alert('Debe haber al menos dos parejas completas para empezar.');
                 return;
