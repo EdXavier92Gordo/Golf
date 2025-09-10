@@ -270,6 +270,27 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         actualizarTotalesEnTabla();
     }
     
+
+    // --- AJUSTE 3: Nueva función auxiliar para "traducir" IDs a Nombres ---
+    function traducirDescripcionConNombres(descripcion) {
+        // Usa una expresión regular para encontrar todos los números (IDs)
+        const idsEncontrados = descripcion.match(/\d+/g);
+        if (!idsEncontrados) return descripcion; // Si no hay IDs, devuelve el original
+
+        let descripcionTraducida = descripcion;
+        // Reemplaza cada ID encontrado por su nombre correspondiente
+        idsEncontrados.forEach(id => {
+            const jugador = jugadores.find(j => j.id == id);
+            const nombre = jugador ? jugador.nombre : `ID ${id}`;
+            // Usa una nueva expresión regular para reemplazar solo ese ID específico
+            descripcionTraducida = descripcionTraducida.replace(new RegExp(`\\b${id}\\b`), nombre);
+        });
+        return descripcionTraducida;
+    }
+    
+
+
+
     // --- MANEJO DE EVENTOS ---
     function configurarEventListeners() {
         document.getElementById('btn-gestionar-jugadores').addEventListener('click', () => mostrarVista('gestionJugadores'));
@@ -865,7 +886,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 const aggOut = match.aggregate.p1.slice(0, 9).reduce((a, b) => a + b, 0) - match.aggregate.p2.slice(0, 9).reduce((a, b) => a + b, 0);
                 const aggIn = match.aggregate.p1.slice(9, 18).reduce((a, b) => a + b, 0) - match.aggregate.p2.slice(9, 18).reduce((a, b) => a + b, 0);
                 
-                html += `<tr><td rowspan="2">${match.descripcion}</td><td>Best Ball</td><td>${bbOut}</td><td>${bbIn}</td><td>${bbOut + bbIn}</td></tr>`;
+                // --- AJUSTE 3: Usar la función traductora para mostrar nombres en la tabla ---
+                html += `<tr><td rowspan="2">${traducirDescripcionConNombres(match.descripcion)}</td><td>Best Ball</td><td>${bbOut}</td><td>${bbIn}</td><td>${bbOut + bbIn}</td></tr>`;
                 html += `<tr><td>Aggregate</td><td>${aggOut}</td><td>${aggIn}</td><td>${aggOut + aggIn}</td></tr>`;
             });
             html += '</tbody></table>';
@@ -909,7 +931,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
             
             html += '<tr>';
             if (esPrimeraFilaDelMatch) {
-                html += `<td rowspan="2" class="match-cell">${fila.descripcion}</td>`;
+                // --- AJUSTE 3: Usar la función traductora para mostrar nombres en la tabla ---
+                html += `<td rowspan="2" class="match-cell">${traducirDescripcionConNombres(fila.descripcion)}</td>`;
             }
             html += `<td>${fila.modalidad}</td><td>${fila.outScore}</td><td>${fila.inScore}</td>${celdas('apuestasOut')}${celdas('apuestasIn')}`;
             html += '</tr>';
@@ -960,7 +983,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
 
             html += '<tr>';
             if (esPrimeraFilaDelMatch) {
-                html += `<td rowspan="2" class="match-cell">${fila.descripcion}</td>`;
+                // --- AJUSTE 3: Usar la función traductora para mostrar nombres en la tabla ---
+                html += `<td rowspan="2" class="match-cell">${traducirDescripcionConNombres(fila.descripcion)}</td>`;
             }
             html += `<td>${fila.modalidad}</td><td>${fila.totalScore}</td>${celdas}`;
             html += '</tr>';
@@ -1004,7 +1028,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
             const p1_ids = pareja1Str.split(' & ');
             const p2_ids = pareja2Str.split(' & ');
 
-            html += `<h4>Debug: ${match.descripcion} (HDCP Juego: ${match.handicapDeJuego})</h4>`;
+            // --- AJUSTE 3: Usar la función traductora para mostrar nombres en el título de la tabla ---
+            html += `<h4>Debug: ${traducirDescripcionConNombres(match.descripcion)} (HDCP Juego: ${match.handicapDeJuego})</h4>`;
             html += '<div class="tabla-debug"><table>';
             html += `<thead><tr>
                 <th>Hoyo</th><th>Index</th>
