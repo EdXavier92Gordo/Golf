@@ -1,5 +1,20 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     
+    // --- AJUSTE 6: Cargar y mostrar el mensaje de bienvenida tan pronto como sea posible ---
+    try {
+        const respuestaMensajes = await fetch('data/mensajes.json');
+        const mensajes = await respuestaMensajes.json();
+        const mensajeAleatorio = mensajes[Math.floor(Math.random() * mensajes.length)];
+        const pMensaje = document.getElementById('mensaje-bienvenida');
+        if (pMensaje) {
+            pMensaje.textContent = mensajeAleatorio;
+        }
+    } catch (error) {
+        console.error("No se pudieron cargar los mensajes de bienvenida.", error);
+        // El mensaje por defecto en el HTML se mantendrá si hay un error.
+    }
+    // --- FIN DEL AJUSTE ---
+
     const vistaBienvenida = document.getElementById('vista-bienvenida');
     const appContainer = document.getElementById('app-container');
     const btnIniciar = document.getElementById('btn-iniciar-app');
@@ -489,8 +504,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         validarSeleccionDeJugadores();
     }
 
-    // --- AJUSTE 5: Se restaura la lógica de validación visual ---
     function validarSeleccionDeJugadores() {
+        // --- AJUSTE 5 ---
         const selectoresActivos = document.querySelectorAll('#config-parejas .selector-jugador, #config-individual .selector-jugador');
         const jugadoresSeleccionados = new Set();
         selectoresActivos.forEach(sel => {
@@ -540,7 +555,7 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 }
             }
             
-            // --- AJUSTE 5: Se restaura la validación de jugadores duplicados ---
+            // --- AJUSTE 5 ---
             const hayDuplicados = new Set(todosLosJugadoresSeleccionados).size !== todosLosJugadoresSeleccionados.length;
             if(hayDuplicados) {
                 alert('Un jugador no puede estar seleccionado en más de una pareja.');
