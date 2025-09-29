@@ -153,7 +153,7 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         }
 
         let tablaHTML = '<table><thead><tr><th>ID</th><th>Nombre</th><th>HDCP</th><th>Acciones</th></tr></thead><tbody>';
-// --- AJUSTE 2: Ordenar la lista de jugadores por nombre alfabéticamente ---
+        
         [...jugadores].sort((a, b) => a.nombre.localeCompare(b.nombre)).forEach(jugador => {
             tablaHTML += `
                 <tr>
@@ -271,8 +271,9 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
     }
     
 
-    // --- AJUSTE 3: Nueva función auxiliar para "traducir" IDs a Nombres ---
+    // --- AJUSTE 3 (del requerimiento anterior, se mantiene): Nueva función auxiliar para "traducir" IDs a Nombres ---
     function traducirDescripcionConNombres(descripcion) {
+        if (typeof descripcion !== 'string') return ''; // Guarda contra valores no válidos
         // Usa una expresión regular para encontrar todos los números (IDs)
         const idsEncontrados = descripcion.match(/\d+/g);
         if (!idsEncontrados) return descripcion; // Si no hay IDs, devuelve el original
@@ -288,9 +289,6 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         return descripcionTraducida;
     }
     
-
-
-
     // --- MANEJO DE EVENTOS ---
     function configurarEventListeners() {
         document.getElementById('btn-gestionar-jugadores').addEventListener('click', () => mostrarVista('gestionJugadores'));
@@ -496,27 +494,7 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
     }
 
     function validarSeleccionDeJugadores() {
-    // AJUSTE para desactivar la validación de jugadores que no permite elegirlos en más de una pareja  /*  
-        
-        const selectoresActivos = document.querySelectorAll('#config-parejas .selector-jugador, #config-individual .selector-jugador');
-        const jugadoresSeleccionados = new Set();
-        selectoresActivos.forEach(sel => {
-            if (sel.value) {
-                jugadoresSeleccionados.add(sel.value);
-            }
-        });
-        selectoresActivos.forEach(selectorActual => {
-            const valorActual = selectorActual.value;
-            selectorActual.querySelectorAll('option').forEach(opcion => {
-                if (opcion.value && jugadoresSeleccionados.has(opcion.value) && opcion.value !== valorActual) {
-                    opcion.disabled = true;
-                } else {
-                    opcion.disabled = false;
-                }
-            });
-        });
-        
-       //HASTA AQUÍ COMENTAR PARA DESACTIVAR VALIDACIÓN                       */
+        // Se mantiene vacía para permitir selección múltiple.
     }
 
     function handleEmpezarPartida() {
@@ -549,40 +527,17 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 }
             }
             
-// --- AJUSTE 1: Se comenta la validación de jugadores duplicados --- /*
-            
-            
-            const hayDuplicados = new Set(todosLosJugadoresSeleccionados).size !== todosLosJugadoresSeleccionados.length;
-            if(hayDuplicados) {
-                alert('Un jugador no puede estar seleccionado en más de una pareja.');
-                return;
-            }
-                // hasta aqui comentar para inactivar validación */
             if(todasLasParejas.length < 2) {
                 alert('Debe haber al menos dos parejas completas para empezar.');
                 return;
             }
-            nuevaPartida.jugadores = todasLasParejas.flat();
-            // AJUSTE CLAVE 1: Generar descripción de pareja con separador de depuración '#'
-            //nuevaPartida.descripcion = 'Parejas: ' + todasLasParejas.map(p => p.join(' & ')).join(' VS ');
-        
-            // ==============================================================================
-            // --- AJUSTE SOLICITADO: Mostrar nombres de jugadores en la descripción ---
-            // ==============================================================================
-            const descripcionParejas = todasLasParejas.map(par => {
-            	// Para cada ID en el par, buscamos el objeto jugador completo
-            	const nombre1 = jugadores.find(j => j.id == par[0])?.nombre || `ID ${par[0]}`;
-            	const nombre2 = jugadores.find(j => j.id == par[1])?.nombre || `ID ${par[1]}`;
-            	// Unimos los nombres encontrados
-            	return `${nombre1} & ${nombre2}`;
-            }).join(' VS '); // Unimos todas las parejas con ' VS '
-            
-            nuevaPartida.descripcion = `Parejas: ${descripcionParejas}`;
-            // ==============================================================================
-            // --- FIN DEL AJUSTE ---
-            // 
-
-
+            nuevaPartida.jugadores = todosLosJugadoresSeleccionados;
+            
+            nuevaPartida.descripcion = 'Parejas: ' + todasLasParejas.map(p => {
+                const j1 = jugadores.find(j => j.id == p[0]);
+                const j2 = jugadores.find(j => j.id == p[1]);
+                return (j1 ? j1.nombre : p[0]) + ' & ' + (j2 ? j2.nombre : p[1]);
+            }).join(' vs ');
         } else {
             const j1Id = document.getElementById('ind_j1').value;
             const j2Id = document.getElementById('ind_j2').value;
@@ -591,7 +546,7 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
             nuevaPartida.jugadores = [j1Id, j2Id];
             const j1 = jugadores.find(j => j.id == j1Id);
             const j2 = jugadores.find(j => j.id == j2Id);
-            nuevaPartida.descripcion = `Individual: ${(j1 ? j1.nombre : j1Id)} VS ${(j2 ? j2.nombre : j2Id)}`;
+            nuevaPartida.descripcion = `Individual: ${(j1 ? j1.nombre : j1Id)} vs ${(j2 ? j2.nombre : j2Id)}`;
         }
         estadoApp.partidaActual = nuevaPartida;
         estadoApp.partidasGuardadas.push(nuevaPartida);
@@ -708,7 +663,12 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                     ];
                     const handicapDeJuego = Math.min(...hándicapsDelMatch);
                     const resultadoMatch = {
-                        descripcion: `Pareja ${i+1} (${p1_j1_id} & ${p1_j2_id}) VS Pareja ${j+1} (${p2_j1_id} & ${p2_j2_id})`,
+                        // --- AJUSTE 4: Se corrige la descripción para que no incluya los índices de pareja,
+                        // pero se añaden nuevas propiedades para almacenar los IDs de forma segura.
+                        descripcion: `Pareja (${p1_j1_id} & ${p1_j2_id}) vs Pareja (${p2_j1_id} & ${p2_j2_id})`,
+                        pareja1_ids: [p1_j1_id, p1_j2_id],
+                        pareja2_ids: [p2_j1_id, p2_j2_id],
+                        // --- FIN DEL AJUSTE ---
                         handicapDeJuego: handicapDeJuego,
                         bestBall: { p1: Array(18).fill(0), p2: Array(18).fill(0) },
                         aggregate: { p1: Array(18).fill(0), p2: Array(18).fill(0) },
@@ -817,10 +777,10 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         };
 
         resultadosFoursome.forEach(match => {
-            const [pareja1Str, pareja2Str] = match.descripcion.replace(/Pareja \d+ \(/g, '').replace(/\)/g, '').split(' VS ');
-            // AJUSTE CLAVE 2: Usar el separador correcto para dividir los IDs
-            const p1_ids = pareja1Str.split(' & ');
-            const p2_ids = pareja2Str.split(' & ');
+            // --- AJUSTE 4: Se obtienen los IDs de las nuevas propiedades, no de la descripción.
+            const p1_ids = match.pareja1_ids;
+            const p2_ids = match.pareja2_ids;
+            // --- FIN DEL AJUSTE ---
 
             const bbOut = match.bestBall.p1.slice(0, 9).reduce((a, b) => a + b, 0) - match.bestBall.p2.slice(0, 9).reduce((a, b) => a + b, 0);
             const bbIn = match.bestBall.p1.slice(9, 18).reduce((a, b) => a + b, 0) - match.bestBall.p2.slice(9, 18).reduce((a, b) => a + b, 0);
@@ -886,7 +846,6 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 const aggOut = match.aggregate.p1.slice(0, 9).reduce((a, b) => a + b, 0) - match.aggregate.p2.slice(0, 9).reduce((a, b) => a + b, 0);
                 const aggIn = match.aggregate.p1.slice(9, 18).reduce((a, b) => a + b, 0) - match.aggregate.p2.slice(9, 18).reduce((a, b) => a + b, 0);
                 
-                // --- AJUSTE 3: Usar la función traductora para mostrar nombres en la tabla ---
                 html += `<tr><td rowspan="2">${traducirDescripcionConNombres(match.descripcion)}</td><td>Best Ball</td><td>${bbOut}</td><td>${bbIn}</td><td>${bbOut + bbIn}</td></tr>`;
                 html += `<tr><td>Aggregate</td><td>${aggOut}</td><td>${aggIn}</td><td>${aggOut + aggIn}</td></tr>`;
             });
@@ -931,7 +890,6 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
             
             html += '<tr>';
             if (esPrimeraFilaDelMatch) {
-                // --- AJUSTE 3: Usar la función traductora para mostrar nombres en la tabla ---
                 html += `<td rowspan="2" class="match-cell">${traducirDescripcionConNombres(fila.descripcion)}</td>`;
             }
             html += `<td>${fila.modalidad}</td><td>${fila.outScore}</td><td>${fila.inScore}</td>${celdas('apuestasOut')}${celdas('apuestasIn')}`;
@@ -960,14 +918,14 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
             const jugador = jugadores.find(j => j.id == id);
             return `<th>${jugador ? jugador.nombre : id}</th>`;
         }).join('');
-        let html = `<h4>Apuestas Dobles (TOTAL)</h4>`;
+        let html = `<h4>Apuesta Grande (TOTAL)</h4>`;
         html += '<div class="tabla-apuestas-wrapper">';
         html += '<table class="tabla-resultados tabla-apuestas">';
         html += `
             <thead>
                 <tr>
                     <th rowspan="2">Match</th><th rowspan="2">Modalidad</th><th rowspan="2">TOTAL</th>
-                    <th colspan="${listaJugadores.length}">APUESTA DOBLE</th>
+                    <th colspan="${listaJugadores.length}">APUESTA GRANDE</th>
                 </tr>
                 <tr>${headersJugadores}</tr>
             </thead>
@@ -983,7 +941,6 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
 
             html += '<tr>';
             if (esPrimeraFilaDelMatch) {
-                // --- AJUSTE 3: Usar la función traductora para mostrar nombres en la tabla ---
                 html += `<td rowspan="2" class="match-cell">${traducirDescripcionConNombres(fila.descripcion)}</td>`;
             }
             html += `<td>${fila.modalidad}</td><td>${fila.totalScore}</td>${celdas}`;
@@ -1023,12 +980,11 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         }
         let html = '';
         resultados.resultadosFoursome.forEach(match => {
-            const [pareja1Str, pareja2Str] = match.descripcion.replace(/Pareja \d+ \(/g, '').replace(/\)/g, '').split(' VS ');
-            // AJUSTE CLAVE 3: Usar el separador correcto para dividir los IDs
-            const p1_ids = pareja1Str.split(' & ');
-            const p2_ids = pareja2Str.split(' & ');
+            // --- AJUSTE 4: Se obtienen los IDs de las nuevas propiedades, no de la descripción.
+            const p1_ids = match.pareja1_ids;
+            const p2_ids = match.pareja2_ids;
+            // --- FIN DEL AJUSTE ---
 
-            // --- AJUSTE 3: Usar la función traductora para mostrar nombres en el título de la tabla ---
             html += `<h4>Debug: ${traducirDescripcionConNombres(match.descripcion)} (HDCP Juego: ${match.handicapDeJuego})</h4>`;
             html += '<div class="tabla-debug"><table>';
             html += `<thead><tr>
@@ -1044,8 +1000,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                     <td>${detalle.hoyo}</td><td>${detalle.index}</td>
                     <td>${detalle.netoP1J1 ?? '-'}</td><td>${detalle.netoP1J2 ?? '-'}</td><td><b>${detalle.bestBallP1 === Infinity ? '-' : detalle.bestBallP1}</b></td>
                     <td>${detalle.netoP2J1 ?? '-'}</td><td>${detalle.netoP2J2 ?? '-'}</td><td><b>${detalle.bestBallP2 === Infinity ? '-' : detalle.bestBallP2}</b></td>
-                    <td>${detalle.puntoBB_P1}</td><td>${detalle.puntoBB_P2}</td><td>${detalle.ganadorBB}</td>
-                    <td>${detalle.aggregateP1}</td><td>${detalle.aggregateP2}</td><td>${detalle.puntoAgg_P1}</td><td>${detalle.puntoAgg_P2}</td><td>${detalle.ganadorAgg}</td>
+                    <td>${detalle.puntoBB_P1}</td><td>${detalle.puntoBB_P2}</td><td>${traducirDescripcionConNombres(detalle.ganadorBB)}</td>
+                    <td>${detalle.aggregateP1}</td><td>${detalle.aggregateP2}</td><td>${detalle.puntoAgg_P1}</td><td>${detalle.puntoAgg_P2}</td><td>${traducirDescripcionConNombres(detalle.ganadorAgg)}</td>
                 </tr>`;
             }
             const out_bb_p1 = match.bestBall.p1.slice(0, 9).reduce((a, b) => a + b, 0);
@@ -1063,8 +1019,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                     <td>${detalle.hoyo}</td><td>${detalle.index}</td>
                     <td>${detalle.netoP1J1 ?? '-'}</td><td>${detalle.netoP1J2 ?? '-'}</td><td><b>${detalle.bestBallP1 === Infinity ? '-' : detalle.bestBallP1}</b></td>
                     <td>${detalle.netoP2J1 ?? '-'}</td><td>${detalle.netoP2J2 ?? '-'}</td><td><b>${detalle.bestBallP2 === Infinity ? '-' : detalle.bestBallP2}</b></td>
-                    <td>${detalle.puntoBB_P1}</td><td>${detalle.puntoBB_P2}</td><td>${detalle.ganadorBB}</td>
-                    <td>${detalle.aggregateP1}</td><td>${detalle.aggregateP2}</td><td>${detalle.puntoAgg_P1}</td><td>${detalle.puntoAgg_P2}</td><td>${detalle.ganadorAgg}</td>
+                    <td>${detalle.puntoBB_P1}</td><td>${detalle.puntoBB_P2}</td><td>${traducirDescripcionConNombres(detalle.ganadorBB)}</td>
+                    <td>${detalle.aggregateP1}</td><td>${detalle.aggregateP2}</td><td>${detalle.puntoAgg_P1}</td><td>${detalle.puntoAgg_P2}</td><td>${traducirDescripcionConNombres(detalle.ganadorAgg)}</td>
                 </tr>`;
             }
             const in_bb_p1 = match.bestBall.p1.slice(9, 18).reduce((a, b) => a + b, 0);
