@@ -218,7 +218,6 @@ thead th {
 }
 
 /* --- ESTILOS PARA LISTA DE PARTIDAS (MÁS COMPACTOS) --- */
-/* AJUSTE: Nuevos estilos para realzar el contenedor del historial */
 #partidas-guardadas-container {
     margin-top: 2.5rem;
     border-radius: var(--radio-borde);
@@ -253,11 +252,11 @@ thead th {
 #lista-partidas details[open] {
     border-left-color: var(--color-secundario);
 }
-/* AJUSTE: Padding reducido para un look más compacto */
+
 #lista-partidas details > summary {
     cursor: pointer;
     font-weight: bold;
-    padding: 1.5rem 0.5rem; /* Reducido desde 0.5rem */
+    padding: 1.5rem 0.5rem; 
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
@@ -288,19 +287,19 @@ thead th {
 #lista-partidas li.fila-partida:hover {
     background-color: #eef7ff;
 }
-/* AJUSTE: Padding reducido para filas más delgadas */
+
 #lista-partidas li.fila-partida a {
     flex-grow: 1;
-    padding: 6px 8px; /* Reducido desde 8px */
+    padding: 6px 8px; 
     text-decoration: none;
     color: var(--color-texto);
 }
-/* AJUSTE: Botón de eliminar más pequeño */
+
 .btn-eliminar-partida {
-    width: 28px;   /* Reducido desde 30px */
-    height: 28px;  /* Reducido desde 30px */
+    width: 28px;
+    height: 28px;
     padding: 0;
-    font-size: 1.1rem; /* Reducido desde 1.2rem */
+    font-size: 1.1rem;
     line-height: 28px;
     margin: 0 8px 0 0;
     flex-shrink: 0;
@@ -327,7 +326,6 @@ thead th {
         padding: 0.6rem 0.8rem;
     }
 
-    /* Poner selectores de pareja en fila en pantallas grandes */
     #config-parejas .fila-pareja {
         flex-direction: row;
         align-items: center;
@@ -339,7 +337,7 @@ thead th {
 }
 
 /* ==========================================================================
-   6. PANTALLA DE BIENVENIDA --IMAGEN A REEMPLAZAR  https://www.pexels.com/es-es/buscar/campo%20de%20golf/
+   6. PANTALLA DE BIENVENIDA
    ========================================================================== */
 #vista-bienvenida {
     position: fixed;
@@ -380,21 +378,21 @@ thead th {
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-.bienvenida-contenido h1 {
-    color: white;
-    font-size: clamp(2rem, 8vw, 3rem);
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
+/* --- AJUSTE 7: Se elimina la regla .bienvenida-titulo --- */
 
-.bienvenida-contenido p {
-    font-size: clamp(1rem, 4vw, 1.2rem);
-    margin-bottom: 2rem;
-    font-style: italic;
-    max-width: 450px;
-    color: rgba(255, 255, 255, 0.9);
+/* --- AJUSTE 7: Se transfieren y ajustan los estilos del título a la frase motivacional --- */
+#mensaje-bienvenida {
+    color: white;
+    font-size: clamp(2.2rem, 1.8vw, 3.5rem); 
+    font-weight: 900; 
+    letter-spacing: 3px; 
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); 
+    margin-bottom: 2rem; /* Aumentamos el margen inferior para separar del botón */
+    max-width: 600px;
+    line-height: 1.3;
+    min-height: 100px;
+    opacity: 0; 
+    animation: fadeInDown 0.8s ease-out 0.2s forwards;
 }
 
 .bienvenida-contenido button {
@@ -424,10 +422,48 @@ thead th {
 }
 
 .bienvenida-footer p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: rgba(255, 255, 255, 0.6);
     font-style: normal;
 }
+
+@keyframes slideUpAndFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.footer-credit {
+    opacity: 0; 
+    animation: slideUpAndFadeIn 1s ease-out 0.2s forwards;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.gif-estilo {
+  display: block;
+  width: 85%; 
+  max-width: 350px; 
+  margin: 20px auto; 
+  border-radius: 25px; 
+  border: 3px solid #f0f0f0; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
 
 /* ==========================================================================
    7. FOOTER DE LA APLICACIÓN
@@ -445,18 +481,8 @@ thead th {
     font-style: italic;
 }
 
-
-/* ... (Todos los estilos anteriores sin cambios) ... */
-
 /* ==========================================================================
-   7. FOOTER DE LA APLICACIÓN
-   ========================================================================== */
-.app-footer {
-    /* ... */
-}
-
-/* ==========================================================================
-   8. NUEVO: VISTA DE GESTIÓN DE JUGADORES (CRUD)
+   8. VISTA DE GESTIÓN DE JUGADORES (CRUD)
    ========================================================================== */
 #vista-gestion-jugadores .form-gestion-jugador {
     background-color: #f8f9fa;
@@ -521,7 +547,7 @@ thead th {
     margin-left: 0.5rem;
 }
 
-/* AJUSTE: Ocultar la primera columna (ID) en la tabla de gestión de jugadores */
+/* Ocultar la primera columna (ID) en la tabla de gestión de jugadores */
 #lista-gestion-jugadores th:first-child,
 #lista-gestion-jugadores td:first-child {
     display: none;
@@ -529,17 +555,17 @@ thead th {
 
 /* Estilos para los nuevos inputs de texto */
 .form-input {
-    background-color: white; /* Un gris muy claro de fondo */
-    border: 1px solid #ced4da;   /* Borde sutil */
+    background-color: white; 
+    border: 1px solid #ced4da;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
 }
 
 /* Efecto al hacer clic en el input (focus) */
 .form-input:focus {
-    border-color: var(--color-secundario); /* Cambia el color del borde a azul */
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Añade un resplandor azul */
-    outline: none; /* Quita el borde por defecto del navegador */
+    border-color: var(--color-secundario);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
 }
 
 /* --- NUEVO: Estilos para Inputs con Iconos --- */
@@ -554,19 +580,19 @@ thead th {
     transform: translateY(-50%);
     width: 20px;
     height: 20px;
-    color: #adb5bd; /* Color gris sutil para el icono */
+    color: #adb5bd;
     transition: color 0.2s ease;
 }
 
 /* Ajuste a .form-input para que el texto no se solape con el icono */
 .form-input {
-    padding-left: 40px !important; /* Añadir espacio a la izquierda para el icono */
-    background-color: white; /* Un fondo gris muy claro */
-    border: 2px solid #dee2e6;   /* Borde un poco más grueso */
+    padding-left: 40px !important;
+    background-color: white; 
+    border: 2px solid #dee2e6; 
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    font-size: 1.1rem; /* Letra un poco más grande */
-    font-weight: 500; /* Letra semi-negrita */
-    color: #495057; /* Color de texto gris oscuro */
+    font-size: 1.1rem;
+    font-weight: 500; 
+    color: #495057; 
     border-radius: var(--radio-borde);
     width: 100%;
     padding: 0.6rem 0.8rem;
@@ -581,18 +607,18 @@ thead th {
 
 /* Ajuste al :focus para que el icono también cambie de color */
 .form-input:focus {
-    border-color: var(--color-primario); /* Cambia el color del borde al primario */
-    box-shadow: 0 0 0 4px rgba(0, 90, 156, 0.15); /* Resplandor más pronunciado */
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 4px rgba(0, 90, 156, 0.15); 
     outline: none;
 }
 
 .form-input:focus + .input-icon {
-    color: var(--color-primario); /* El icono se vuelve del color primario al enfocar */
+    color: var(--color-primario);
 }
 
 /* --- Estilos del Footer de Bienvenida --- */
 .bienvenida-footer p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: rgba(255, 255, 255, 0.6);
     font-style: normal;
 }
@@ -610,8 +636,8 @@ thead th {
 }
 
 .footer-credit {
-    opacity: 0; /* Empieza oculto */
-    animation: slideUpAndFadeIn 0.8s ease-out 0.5s forwards; /* animación | duración | timing | delay | fill-mode */
+    opacity: 0;
+    animation: slideUpAndFadeIn 1s ease-out 0.2s forwards;
 }
 
 /* --- NUEVO: Estilos para el Título de Bienvenida --- */
@@ -626,23 +652,12 @@ thead th {
     }
 }
 
-.bienvenida-titulo {
-    color: white;
-    font-size: clamp(2.2rem, 8vw, 3.5rem); /* Un poco más grande */
-    font-weight: 900; /* Más grueso para que resalte */
-    letter-spacing: 3px; /* Más espaciado */
-    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
-    margin-bottom: 0.5rem;
-    opacity: 0; /* Empieza oculto para la animación */
-    animation: fadeInDown 0.8s ease-out 0.2s forwards; /* animación | duración | timing | delay | fill-mode */
-}
-
 .gif-estilo {
   display: block;
-  width: 85%; /* La hacemos más pequeña, al 50% de su contenedor */
-  max-width: 350px; /* Un tamaño máximo para que no sea muy grande en pantallas anchas */
-  margin: 20px auto; /* Centra la imagen horizontalmente y le da espacio arriba/abajo */
-  border-radius: 25px; /* ¡Aquí está la magia para redondear las esquinas! */
-  border: 3px solid #f0f0f0; /* Un borde sutil para darle un mejor acabado */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Una sombra suave opcional */
+  width: 85%; 
+  max-width: 350px; 
+  margin: 20px auto; 
+  border-radius: 25px; 
+  border: 3px solid #f0f0f0; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
