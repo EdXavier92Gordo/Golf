@@ -383,7 +383,7 @@ thead th {
 /* --- AJUSTE 7: Se transfieren y ajustan los estilos del título a la frase motivacional --- */
 #mensaje-bienvenida {
     color: white;
-    font-size: clamp(2.2rem, 1.8vw, 3.5rem); 
+    font-size: clamp(2.2rem, 1.3vw, 3.5rem); 
     font-weight: 900; 
     letter-spacing: 3px; 
     text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); 
@@ -422,7 +422,7 @@ thead th {
 }
 
 .bienvenida-footer p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.6);
     font-style: normal;
 }
