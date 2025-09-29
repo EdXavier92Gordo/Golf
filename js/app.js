@@ -271,19 +271,15 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
     }
     
 
-    // --- AJUSTE 3 (del requerimiento anterior, se mantiene): Nueva función auxiliar para "traducir" IDs a Nombres ---
     function traducirDescripcionConNombres(descripcion) {
-        if (typeof descripcion !== 'string') return ''; // Guarda contra valores no válidos
-        // Usa una expresión regular para encontrar todos los números (IDs)
+        if (typeof descripcion !== 'string') return '';
         const idsEncontrados = descripcion.match(/\d+/g);
-        if (!idsEncontrados) return descripcion; // Si no hay IDs, devuelve el original
+        if (!idsEncontrados) return descripcion; 
 
         let descripcionTraducida = descripcion;
-        // Reemplaza cada ID encontrado por su nombre correspondiente
         idsEncontrados.forEach(id => {
             const jugador = jugadores.find(j => j.id == id);
             const nombre = jugador ? jugador.nombre : `ID ${id}`;
-            // Usa una nueva expresión regular para reemplazar solo ese ID específico
             descripcionTraducida = descripcionTraducida.replace(new RegExp(`\\b${id}\\b`), nombre);
         });
         return descripcionTraducida;
@@ -493,8 +489,25 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         validarSeleccionDeJugadores();
     }
 
+    // --- AJUSTE 5: Se restaura la lógica de validación visual ---
     function validarSeleccionDeJugadores() {
-        // Se mantiene vacía para permitir selección múltiple.
+        const selectoresActivos = document.querySelectorAll('#config-parejas .selector-jugador, #config-individual .selector-jugador');
+        const jugadoresSeleccionados = new Set();
+        selectoresActivos.forEach(sel => {
+            if (sel.value) {
+                jugadoresSeleccionados.add(sel.value);
+            }
+        });
+        selectoresActivos.forEach(selectorActual => {
+            const valorActual = selectorActual.value;
+            selectorActual.querySelectorAll('option').forEach(opcion => {
+                if (opcion.value && jugadoresSeleccionados.has(opcion.value) && opcion.value !== valorActual) {
+                    opcion.disabled = true;
+                } else {
+                    opcion.disabled = false;
+                }
+            });
+        });
     }
 
     function handleEmpezarPartida() {
@@ -527,6 +540,13 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 }
             }
             
+            // --- AJUSTE 5: Se restaura la validación de jugadores duplicados ---
+            const hayDuplicados = new Set(todosLosJugadoresSeleccionados).size !== todosLosJugadoresSeleccionados.length;
+            if(hayDuplicados) {
+                alert('Un jugador no puede estar seleccionado en más de una pareja.');
+                return;
+            }
+
             if(todasLasParejas.length < 2) {
                 alert('Debe haber al menos dos parejas completas para empezar.');
                 return;
@@ -663,12 +683,9 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                     ];
                     const handicapDeJuego = Math.min(...hándicapsDelMatch);
                     const resultadoMatch = {
-                        // --- AJUSTE 4: Se corrige la descripción para que no incluya los índices de pareja,
-                        // pero se añaden nuevas propiedades para almacenar los IDs de forma segura.
                         descripcion: `Pareja (${p1_j1_id} & ${p1_j2_id}) vs Pareja (${p2_j1_id} & ${p2_j2_id})`,
                         pareja1_ids: [p1_j1_id, p1_j2_id],
                         pareja2_ids: [p2_j1_id, p2_j2_id],
-                        // --- FIN DEL AJUSTE ---
                         handicapDeJuego: handicapDeJuego,
                         bestBall: { p1: Array(18).fill(0), p2: Array(18).fill(0) },
                         aggregate: { p1: Array(18).fill(0), p2: Array(18).fill(0) },
@@ -777,10 +794,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         };
 
         resultadosFoursome.forEach(match => {
-            // --- AJUSTE 4: Se obtienen los IDs de las nuevas propiedades, no de la descripción.
             const p1_ids = match.pareja1_ids;
             const p2_ids = match.pareja2_ids;
-            // --- FIN DEL AJUSTE ---
 
             const bbOut = match.bestBall.p1.slice(0, 9).reduce((a, b) => a + b, 0) - match.bestBall.p2.slice(0, 9).reduce((a, b) => a + b, 0);
             const bbIn = match.bestBall.p1.slice(9, 18).reduce((a, b) => a + b, 0) - match.bestBall.p2.slice(9, 18).reduce((a, b) => a + b, 0);
@@ -980,10 +995,8 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         }
         let html = '';
         resultados.resultadosFoursome.forEach(match => {
-            // --- AJUSTE 4: Se obtienen los IDs de las nuevas propiedades, no de la descripción.
             const p1_ids = match.pareja1_ids;
             const p2_ids = match.pareja2_ids;
-            // --- FIN DEL AJUSTE ---
 
             html += `<h4>Debug: ${traducirDescripcionConNombres(match.descripcion)} (HDCP Juego: ${match.handicapDeJuego})</h4>`;
             html += '<div class="tabla-debug"><table>';
