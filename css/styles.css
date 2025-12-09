@@ -173,7 +173,7 @@ thead th {
 }
 
 /* Estilos específicos de filas y columnas */
-.columna-hoyo { background-color: #34495e; color: white; }
+.columna-hoyo { background-color: #34495e; color: rgb(22, 22, 22); }
 .columna-index { display: none; }
 .mostrar-index .columna-index { display: table-cell; }
 .subtotal-row { background-color: #e9ecef; font-weight: bold; }
@@ -660,4 +660,60 @@ thead th {
   border-radius: 25px; 
   border: 3px solid #f0f0f0; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+/* =========================================
+   MEJORAS DE USABILIDAD MÓVIL (Fase 2)
+   Cabeceras Pegajosas (Sticky Headers)
+========================================= */
+
+/* Asegura que el contenedor de la tabla permita el scroll sin romper lo sticky */
+#tabla-scores {
+    /* overflow-x ya está definido arriba, pero aseguramos que sea auto */
+    overflow-x: auto;
+    /* Limita la altura en pantallas muy altas para que el scroll vertical funcione */
+    max-height: 85vh; 
+    /* Un borde suave alrededor de toda la tabla para delimitarla */
+    border: 1px solid var(--color-borde); 
+}
+
+/* --- Cabecera Superior Pegajosa (Nombres de jugadores) --- */
+#tabla-scores table thead th {
+    position: sticky;
+    top: 0; /* Se pega al techo */
+    background-color: #f1f3f5; /* Fondo sólido para tapar lo que pasa por debajo */
+    z-index: 10; /* Asegura que esté por encima de las celdas normales */
+    /* Pequeña sombra para dar profundidad y separarla visualmente */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1); 
+}
+
+/* --- Columnas Izquierdas Pegajosas (Hoyo, Par, Index) --- */
+/* Definimos qué columnas se quedan fijas a la izquierda */
+#tabla-scores table th.columna-hoyo,
+#tabla-scores table td.columna-hoyo,
+#tabla-scores table th:nth-child(2), /* Columna Par (cabecera) */
+#tabla-scores table td:nth-child(2), /* Columna Par (celdas) */
+#tabla-scores table th.columna-index,
+#tabla-scores table td.columna-index {
+    position: sticky;
+    left: 0; /* Se pega a la izquierda */
+    background-color: #cad2da; /* Fondo sólido ligeramente diferente para distinguirlas */
+    z-index: 5; /* Por encima de las celdas de score, pero debajo de la cabecera superior */
+}
+
+/* Ajuste específico para la intersección de la esquina superior izquierda */
+/* (Donde se cruzan "Hoyo/Par/Index" con la fila de nombres) */
+#tabla-scores table thead th.columna-hoyo,
+#tabla-scores table thead th:nth-child(2),
+#tabla-scores table thead th.columna-index {
+    z-index: 15; /* Esta esquina debe estar por encima de todo lo demás */
+    background-color: #e9ecef; /* Un gris un poquito más oscuro para resaltar la esquina */
+}
+
+/* Ajustes visuales menores para mejorar la experiencia en móvil */
+.score-input {
+    /* Números un poco más grandes son más fáciles de leer y tocar */
+    font-size: 18px; 
+    /* Zonas de toque más altas en los inputs */
+    padding: 8px 4px; 
 }
