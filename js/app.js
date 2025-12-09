@@ -382,6 +382,24 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
                 handleScoreInput(e);
             }
         });
+
+        // ======================================================
+        // NUEVO LISTENER PARA LA TECLA ENTER (Fase 2)
+        // Detecta cuando se presiona una tecla dentro de la tabla de scores
+        // ======================================================
+        tablaScoresDiv.addEventListener('keydown', (e) => {
+            // Verificamos si es un input de score Y si la tecla presionada es Enter (código 13)
+            // Esto funciona para teclados físicos y el botón "Ir"/"Intro" de teclados móviles
+            if (e.target.classList.contains('score-input') && e.key === 'Enter') {
+                e.preventDefault(); // Evita el comportamiento por defecto del Enter (como enviar un formulario)
+                
+                // Llama a nuestra nueva función de navegación.
+                // Si en el futuro se desea cambiar la dirección, solo hay que cambiar esta función por la alternativa.
+                navegarAProximaCasillaAbajo(e.target); 
+                // navegarAProximaCasillaDerecha(e.target); // <-- OPCIÓN ALTERNATIVA (Comentada por ahora)
+            }
+        });
+
         document.getElementById('btn-toggle-index').addEventListener('click', () => {
             const tabla = tablaScoresDiv.querySelector('table');
             if (tabla) {
@@ -1073,4 +1091,48 @@ function inicializarAppPrincipal(jugadoresData, cursosData) {
         });
         contenedorDebugDiv.innerHTML = html;
     }
+
+    // ======================================================
+    // NUEVA FUNCIÓN: Navegación inteligente con teclado (Fase 2)
+    // Mueve el foco a la siguiente casilla hacia ABAJO
+    // ======================================================
+    function navegarAProximaCasillaAbajo(inputActual) {
+        const hoyoActualIdx = parseInt(inputActual.dataset.hoyo, 10);
+        const jugadorId = inputActual.dataset.jugador;
+        const siguienteHoyoIdx = hoyoActualIdx + 1;
+
+        // Buscamos el input que tenga el mismo ID de jugador pero el siguiente número de hoyo
+        const siguienteInput = document.querySelector(`.score-input[data-hoyo="${siguienteHoyoIdx}"][data-jugador="${jugadorId}"]`);
+
+        if (siguienteInput) {
+            siguienteInput.focus(); // Mueve el cursor ahí
+        } else {
+            // Si no hay siguiente hoyo (estamos en el 18), quitamos el foco para cerrar el teclado.
+            inputActual.blur(); 
+        }
+    }
+
+    // ======================================================
+    // OPCIÓN ALTERNATIVA: Navegación hacia la DERECHA
+    // (Función auxiliar por si se requiere cambiar la dirección en el futuro)
+    // PARA USARLA: Descomenta la llamada en el event listener del 'keydown' arriba
+    // y comenta la llamada a 'navegarAProximaCasillaAbajo'.
+    // ======================================================
+    /*
+    function navegarAProximaCasillaDerecha(inputActual) {
+        const celdaActual = inputActual.closest('td');
+        const siguienteCelda = celdaActual.nextElementSibling;
+
+        if (siguienteCelda) {
+            const siguienteInput = siguienteCelda.querySelector('.score-input');
+            if (siguienteInput) {
+                siguienteInput.focus();
+            } else {
+                 inputActual.blur();
+            }
+        } else {
+            inputActual.blur();
+        }
+    }
+    */
 }
